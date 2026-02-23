@@ -26,6 +26,40 @@ a {
   margin: 0 auto;
 }
 
+/* --- Icons --- */
+
+#githubicon {
+  position: absolute;
+  top: 40px;
+  right: 6vw;
+  width: 60px;
+  height: 60px;
+  transition: 1.5s;
+  z-index: 0;
+  background-color: transparent;
+  border-radius: 100px;
+}
+
+#githubicon:hover {
+  transform: translateY(-5px);
+  background-color: azure;
+}
+
+#homeIcon {
+  position: absolute;
+  top: 40px;
+  left: 6vw;
+  width: 60px;
+  height: 60px;
+  transition: 1.5s;
+  z-index: 0;
+  background-color: transparent;
+}
+
+#homeIcon:hover {
+  transform: translateY(-5px);
+}
+
 /* --- Header --- */
 
 header {
@@ -186,5 +220,12 @@ noscript {
 
   .post-title {
     font-size: 0.95rem;
+  }
+
+  #homeIcon, #githubicon {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
   }
 }

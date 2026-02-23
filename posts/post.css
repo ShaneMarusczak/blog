@@ -17,6 +17,40 @@ body {
   min-height: 100vh;
 }
 
+/* --- Icons --- */
+
+#githubicon {
+  position: absolute;
+  top: 40px;
+  right: 6vw;
+  width: 60px;
+  height: 60px;
+  transition: 1.5s;
+  z-index: 0;
+  background-color: transparent;
+  border-radius: 100px;
+}
+
+#githubicon:hover {
+  transform: translateY(-5px);
+  background-color: azure;
+}
+
+#homeIcon {
+  position: absolute;
+  top: 40px;
+  left: 6vw;
+  width: 60px;
+  height: 60px;
+  transition: 1.5s;
+  z-index: 0;
+  background-color: transparent;
+}
+
+#homeIcon:hover {
+  transform: translateY(-5px);
+}
+
 article {
   max-width: 44rem;
   margin: 2rem auto 4rem;
@@ -161,5 +195,12 @@ pre code {
 
   pre {
     padding: 0.85rem 1rem;
+  }
+
+  #homeIcon, #githubicon {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
   }
 }
