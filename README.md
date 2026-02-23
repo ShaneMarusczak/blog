@@ -5,13 +5,27 @@ A static blog for GitHub Pages. No build tools, no frameworks — just HTML, CSS
 ## How it works
 
 1. Drop an HTML file into `posts/`
-2. Push to `main`
-3. A GitHub Action scans the posts and regenerates `posts.json`
+2. Add an entry to `posts.json`
+3. Push to `main`
 4. The landing page reads `posts.json` and renders the post list
+
+## Adding a post
+
+Create your HTML file in `posts/`, then add an entry to `posts.json`:
+
+```json
+{
+  "file": "2026-02-23-your-post-slug.html",
+  "title": "Your Post Title",
+  "date": "2026-02-23",
+  "category": "your-category",
+  "description": "A short summary of the post."
+}
+```
 
 ## Post format
 
-Each post is a standalone HTML file. Include these meta tags so the index can pick them up:
+Each post is a standalone HTML file. Include these meta tags in the `<head>`:
 
 ```html
 <meta name="date" content="YYYY-MM-DD">
@@ -34,12 +48,11 @@ Then open `http://localhost:8000`.
 ## Structure
 
 ```
-index.html          Landing page
-style.css           Landing page styles
-app.js              Reads posts.json, renders post list
-posts.json          Auto-generated post manifest
-posts/              Blog posts and shared post stylesheet
-  post.css          Shared styles for posts
-  *.html            Individual posts
-.github/workflows/  GitHub Action to regenerate posts.json
+index.html      Landing page
+style.css       Landing page styles
+app.js          Reads posts.json, renders post list
+posts.json      Post manifest (update manually)
+posts/
+  post.css      Shared styles for posts
+  *.html        Individual posts
 ```
