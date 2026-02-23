@@ -41,6 +41,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
       container.innerHTML = "";
       container.appendChild(list);
+
+      document.querySelectorAll(".post-item").forEach((item) => {
+        item.addEventListener("mouseover", () => {
+          item.classList.add("boxShadow");
+        });
+      });
+
+      document.querySelectorAll(".post-item").forEach((item) => {
+        item.addEventListener("mouseleave", () => {
+          item.classList.remove("boxShadow");
+        });
+      });
     })
     .catch(() => {
       container.innerHTML =

@@ -114,12 +114,16 @@ header nav a:hover {
   background: #faf0e6;
   border: 1px solid black;
   border-radius: 7px;
-  box-shadow: 2px 4px 8px 2px rgba(0, 0, 0, 0.2),
-              0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  transition: transform 0.2s;
+  transition: 500ms;
+}
+
+.boxShadow {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .post-item:hover {
+  background-color: lightgray;
+  cursor: pointer;
   transform: translateY(-2px);
 }
 
