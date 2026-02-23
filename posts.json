@@ -1,7 +1,7 @@
 [
   {
     "file": "taxonomy-v2.html",
-    "title": "A Taxonomy of Prompt Injection from 30+ Gandalf Challenges",
+    "title": "What 30+ Gandalf Challenges Taught Me About Prompt Injection",
     "date": "2026-02-23",
     "category": "ai-security",
     "description": "A taxonomy of prompt injection attack patterns derived from 30+ Gandalf Agent Breaker challenges, organized by attack surface rather than challenge name."
