@@ -1,0 +1,165 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.7;
+  color: #1a1a1a;
+  background-color: #b0c4de;
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+  background-size: 32px 32px;
+  padding: 0 1.5rem;
+  min-height: 100vh;
+}
+
+article {
+  max-width: 44rem;
+  margin: 2rem auto 4rem;
+  background: #faf0e6;
+  border: 1px solid black;
+  border-radius: 7px;
+  padding: 2.5rem 2.5rem 3rem;
+  box-shadow: 2px 4px 8px 2px rgba(0, 0, 0, 0.2),
+              0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+/* --- Title & Meta --- */
+
+article h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 0.25rem;
+}
+
+.meta {
+  font-family: "Roboto Mono", monospace;
+  font-size: 0.8rem;
+  color: #444;
+  margin-bottom: 2rem;
+}
+
+/* --- Headings --- */
+
+article h2 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-top: 2.25rem;
+  margin-bottom: 0.6rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+article h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+
+/* --- Body text --- */
+
+article p {
+  margin-bottom: 1rem;
+}
+
+article strong {
+  font-weight: 600;
+}
+
+/* --- Links --- */
+
+article a {
+  color: #0055aa;
+}
+
+article a:hover {
+  text-decoration: underline;
+}
+
+/* --- Lists --- */
+
+article ul, article ol {
+  margin: 0.75rem 0 1rem 1.5rem;
+}
+
+article li {
+  margin-bottom: 0.35rem;
+}
+
+/* --- TL;DR / callout --- */
+
+.tldr {
+  background: rgba(0, 0, 0, 0.03);
+  border-left: 3px solid black;
+  border-radius: 0;
+  padding: 0.85rem 1.15rem;
+  margin-bottom: 2rem;
+}
+
+/* --- Code --- */
+
+code {
+  font-family: "Roboto Mono", "JetBrains Mono", monospace;
+  font-size: 0.88em;
+  background: rgba(0, 0, 0, 0.06);
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+}
+
+pre {
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 5px;
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  font-size: 0.85em;
+  line-height: 1.5;
+}
+
+/* --- Back link --- */
+
+.back {
+  display: inline-block;
+  font-family: "Roboto Mono", monospace;
+  font-size: 0.82rem;
+  color: #333;
+  text-decoration: none;
+  margin-bottom: 1.5rem;
+}
+
+.back:hover {
+  text-decoration: underline;
+}
+
+/* --- Responsive --- */
+
+@media (max-width: 768px) {
+  article {
+    margin: 1rem auto 3rem;
+    padding: 1.5rem 1.25rem 2rem;
+  }
+
+  article h1 {
+    font-size: 1.35rem;
+  }
+
+  article h2 {
+    font-size: 1.05rem;
+  }
+
+  pre {
+    padding: 0.85rem 1rem;
+  }
+}

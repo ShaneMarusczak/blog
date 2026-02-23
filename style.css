@@ -1,0 +1,190 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.6;
+  color: #1a1a1a;
+  background-color: #b0c4de;
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+  background-size: 32px 32px;
+  padding: 0 1.5rem;
+  min-height: 100vh;
+}
+
+a {
+  color: #1a1a1a;
+}
+
+.container {
+  max-width: 44rem;
+  margin: 0 auto;
+}
+
+/* --- Header --- */
+
+header {
+  padding: 3rem 0 1.5rem;
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-family: "Roboto Mono", monospace;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+header h1 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+header p {
+  color: #333;
+  font-size: 0.92rem;
+  margin-top: 0.25rem;
+}
+
+header nav {
+  margin-top: 0.75rem;
+  font-family: "Roboto Mono", monospace;
+  font-size: 0.8rem;
+  display: flex;
+  gap: 1rem;
+}
+
+header nav a {
+  color: #333;
+  text-decoration: none;
+}
+
+header nav a:hover {
+  text-decoration: underline;
+}
+
+/* --- Posts --- */
+
+.post-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.post-item {
+  background: #faf0e6;
+  border: 1px solid black;
+  border-radius: 7px;
+  box-shadow: 2px 4px 8px 2px rgba(0, 0, 0, 0.2),
+              0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  transition: transform 0.2s;
+}
+
+.post-item:hover {
+  transform: translateY(-2px);
+}
+
+.post-item a {
+  display: block;
+  padding: 1rem 1.25rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.post-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.post-meta {
+  font-family: "Roboto Mono", monospace;
+  font-size: 0.75rem;
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.2rem;
+}
+
+.post-meta .category {
+  background: rgba(0, 0, 0, 0.06);
+  padding: 0.1rem 0.45rem;
+  border-radius: 3px;
+  font-size: 0.7rem;
+}
+
+.post-meta .dot {
+  color: #999;
+}
+
+.post-description {
+  color: #444;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  margin-top: 0.4rem;
+}
+
+/* --- States --- */
+
+.empty-state,
+.error-state {
+  text-align: center;
+  padding: 3rem 2rem;
+  color: #555;
+  background: #faf0e6;
+  border: 1px dashed black;
+  border-radius: 7px;
+  font-size: 0.9rem;
+}
+
+.error-state {
+  color: #cc3333;
+  border-style: solid;
+}
+
+.error-state code {
+  background: aliceblue;
+  padding: 0.1rem 0.4rem;
+  border-radius: 3px;
+  font-size: 0.85em;
+}
+
+/* --- Footer --- */
+
+footer {
+  margin-top: 4rem;
+  padding: 1.5rem 0 3rem;
+  color: #555;
+  font-size: 0.78rem;
+  font-family: "Roboto Mono", monospace;
+}
+
+noscript {
+  display: block;
+}
+
+/* --- Responsive --- */
+
+@media (max-width: 768px) {
+  header {
+    padding: 2rem 0 1.25rem;
+  }
+
+  header h1 {
+    font-size: 1.25rem;
+  }
+
+  .post-item a {
+    padding: 0.85rem 1rem;
+  }
+
+  .post-title {
+    font-size: 0.95rem;
+  }
+}
