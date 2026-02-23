@@ -1,5 +1,12 @@
 [
   {
+    "file": "taxonomy-v2.html",
+    "title": "A Taxonomy of Prompt Injection from 30+ Gandalf Challenges",
+    "date": "2026-02-23",
+    "category": "ai-security",
+    "description": "A taxonomy of prompt injection attack patterns derived from 30+ Gandalf Agent Breaker challenges, organized by attack surface rather than challenge name."
+  },
+  {
     "file": "2026-02-23-building-a-blog-post-skill-for-claude.html",
     "title": "Building a Blog Post Skill for Claude",
     "date": "2026-02-23",
