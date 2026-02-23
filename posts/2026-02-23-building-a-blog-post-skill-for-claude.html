@@ -11,68 +11,67 @@
   <link rel="stylesheet" href="post.css">
 </head>
 <body>
-  <a id="homeLink" href="https://marusczak.com" rel="noreferrer">
+  <a id="homeLink" href="../" rel="noreferrer">
     <img id="homeIcon" src="../house-icon.png" alt="home" />
   </a>
   <a id="gitHubLink" href="https://github.com/ShaneMarusczak/blog" target="_blank" rel="noreferrer">
     <img id="githubicon" src="../github-icon.png" alt="github" />
   </a>
   <article>
-    <a href="../" class="back">&larr; back</a>
     <h1>Building a Blog Post Skill for Claude</h1>
     <p class="meta">2026-02-23 &middot; ai-workflow</p>
 
     <div class="tldr">
-      <strong>TL;DR:</strong> Claude's custom Skills feature lets you encode repeatable workflows. This post walks through building one that converts conversations into structured, standalone HTML blog posts using an expanded STAR framework &mdash; and the design decisions behind it.
+      <strong>TL;DR:</strong> Claude's custom Skills let you encode repeatable workflows. This post walks through building one that converts conversations into structured, standalone HTML blog posts using an expanded STAR framework, and the design decisions that shaped it.
     </div>
 
     <h2>Context</h2>
-    <p>Claude conversations generate a lot of original thinking. Security research, debugging sessions, architecture discussions, theological deep-dives &mdash; whatever the domain, the ideas evaporate once the chat window closes. There's no built-in pipeline from "productive conversation" to "published artifact."</p>
-    <p>Claude's <a href="https://support.anthropic.com/en/articles/11179463-how-to-create-custom-skills" target="_blank" rel="noopener noreferrer">custom Skills</a> solve exactly this kind of repeatable workflow gap. A Skill is a set of instructions packaged as a <code>SKILL.md</code> file that Claude reads at invocation time, giving it a consistent playbook for a specific task. The goal here was to build one that turns any substantive conversation into a publish-ready blog post.</p>
+    <p>Claude conversations produce a lot of good thinking. Security research, debugging sessions, architecture discussions, theological rabbit holes. But once the chat window closes, most of it just disappears. There's no obvious way to go from "useful conversation" to "something you can actually share."</p>
+    <p>Claude's <a href="https://support.anthropic.com/en/articles/11179463-how-to-create-custom-skills" target="_blank" rel="noopener noreferrer">custom Skills</a> are designed for exactly this kind of repeatable task. A Skill is a set of instructions in a <code>SKILL.md</code> file that Claude reads when invoked, giving it a consistent playbook. The goal here was to build one that turns any solid conversation into a publish-ready blog post.</p>
 
     <h2>Problem</h2>
-    <p>Without a defined structure, asking Claude to "write this up as a blog post" produces inconsistent results. Sometimes it's too long. Sometimes it reads like a transcript. Sometimes it's generic content-marketing filler that no developer would finish reading. The output format varies, the voice drifts, and there's no quality floor.</p>
-    <p>The Skill needed to solve three things: give the output a consistent structure that serves developer readers, enforce a voice that sounds like a practitioner rather than a content farm, and produce files that can be published without post-processing.</p>
+    <p>Without a defined structure, asking Claude to "write this up as a blog post" gives inconsistent results. Sometimes it's too long. Sometimes it reads like a transcript. Sometimes it's generic filler that no developer would finish reading. The format varies, the voice drifts, and there's no baseline for quality.</p>
+    <p>The Skill needed to solve three things: give the output a consistent structure for developer readers, enforce a voice that sounds like a practitioner instead of a content farm, and produce files that can be published without any post-processing.</p>
 
     <h2>Approach</h2>
-    <p>The STAR framework (Situation, Task, Action, Result) is a well-known structure for case studies, but it's optimized for interview answers, not technical blog posts. It needed expansion. The final structure adds sections for the reasoning behind the approach, the messy middle of the process, source attribution, and open questions &mdash; things a real engineering write-up needs but STAR leaves out.</p>
+    <p>The STAR framework (Situation, Task, Action, Result) is a well-known structure for case studies, but it's built for interview answers, not technical blog posts. It needed to be expanded. The final structure adds sections for the reasoning behind the approach, the messy middle of the process, source attribution, and open questions. These are things a real engineering write-up needs that STAR doesn't cover.</p>
     <p>The expanded framework:</p>
     <ul>
-      <li><strong>Context</strong> &mdash; why this matters right now</li>
-      <li><strong>Problem</strong> &mdash; the specific gap or question</li>
-      <li><strong>Approach</strong> &mdash; what was chosen and why</li>
-      <li><strong>Process</strong> &mdash; the actual work, including failures</li>
-      <li><strong>Sources &amp; References</strong> &mdash; what informed the work</li>
-      <li><strong>Outcome</strong> &mdash; what was achieved</li>
-      <li><strong>Open Questions</strong> &mdash; what's unresolved</li>
+      <li><strong>Context</strong> - why this matters right now</li>
+      <li><strong>Problem</strong> - the specific gap or question</li>
+      <li><strong>Approach</strong> - what was chosen and why</li>
+      <li><strong>Process</strong> - the actual work, including failures</li>
+      <li><strong>Sources &amp; References</strong> - what informed the work</li>
+      <li><strong>Outcome</strong> - what was achieved</li>
+      <li><strong>Open Questions</strong> - what's unresolved</li>
     </ul>
-    <p>A mandatory TL;DR sits at the top. Developers scan before they read. If the first few seconds don't signal relevance, they leave.</p>
+    <p>A mandatory TL;DR sits at the top. Developers scan before they read. If the first few seconds don't signal relevance, they're gone.</p>
 
     <h2>Process</h2>
-    <p>The Skill went through several iterations. The first draft used Markdown output with YAML front matter, assuming a static site generator like Jekyll or Hugo would process the files. This was changed to standalone HTML &mdash; a complete document with <code>&lt;head&gt;</code>, inline CSS, and semantic markup that renders directly in a browser. No build step, no dependencies. The site's index page links to the file and it just works.</p>
-    <p>I initially scoped the voice as "company wiki" &mdash; internal, utilitarian. That was wrong. The target is a public dev blog. The audience is other practitioners. The corrected register is "senior engineer sharing knowledge with the community." That distinction matters: wiki writing assumes a captive audience; blog writing has to earn attention.</p>
+    <p>The Skill went through several iterations. The first draft used Markdown output with YAML front matter, assuming a static site generator like Jekyll or Hugo would handle the files. This was changed to standalone HTML: a complete document with <code>&lt;head&gt;</code>, inline CSS, and semantic markup that renders directly in a browser. No build step, no dependencies. The site's index page links to the file and it just works.</p>
+    <p>The voice was initially scoped as "company wiki" style, internal and utilitarian. That was wrong. The target is a public dev blog. The audience is other practitioners. The voice needed to be a senior engineer sharing what they know, not writing internal documentation. Wiki writing assumes people have to read it. Blog writing has to earn attention.</p>
     <p>A few specific decisions that came out of iteration:</p>
-    <p><strong>First person is earned, not default.</strong> The primary voice is third-person analytical. First person appears only at decision points and pivots &mdash; "I noticed X, so I shifted to Y." This keeps the focus on the work rather than the author.</p>
-    <p><strong>A pushback clause was added.</strong> If a conversation is too thin to support a real post, the Skill instructs Claude to say so rather than padding. It can suggest a shorter format like a TIL snippet instead. A blog post with nothing to say is worse than no blog post.</p>
-    <p><strong>HTML escaping is called out explicitly.</strong> Code examples inside <code>&lt;pre&gt;&lt;code&gt;</code> blocks need <code>&lt;</code> rendered as <code>&amp;lt;</code>, <code>&gt;</code> as <code>&amp;gt;</code>, and <code>&amp;</code> as <code>&amp;amp;</code>. Without this instruction, Claude occasionally outputs raw angle brackets that the browser interprets as tags, breaking the code display.</p>
-    <p><strong>File naming is specified.</strong> Output follows <code>YYYY-MM-DD-slug-title.html</code> so files sort chronologically in a directory listing and the slug is human-readable.</p>
-    <p>Anthropic's Skill documentation imposes constraints that shaped the final version. The <code>description</code> field &mdash; which Claude uses to decide whether to invoke the Skill &mdash; has a 200-character maximum. The original description was well over that. Compressing it to 188 characters while retaining enough trigger phrases required careful word choice.</p>
+    <p><strong>Third-person by default, first person at decision points.</strong> The primary voice is third-person analytical. First person shows up only at pivots: "I noticed X, so I shifted to Y." This keeps the focus on the work rather than the author.</p>
+    <p><strong>A pushback clause.</strong> If a conversation is too thin to support a real post, the Skill tells Claude to say so rather than pad it out. It can suggest a shorter format like a TIL snippet instead. A blog post with nothing to say is worse than no blog post.</p>
+    <p><strong>Explicit HTML escaping rules.</strong> Code examples inside <code>&lt;pre&gt;&lt;code&gt;</code> blocks need <code>&lt;</code> rendered as <code>&amp;lt;</code>, <code>&gt;</code> as <code>&amp;gt;</code>, and <code>&amp;</code> as <code>&amp;amp;</code>. Without this instruction, Claude occasionally outputs raw angle brackets that the browser interprets as tags, breaking the code display.</p>
+    <p><strong>Predictable file naming.</strong> Output follows <code>YYYY-MM-DD-slug-title.html</code> so files sort chronologically in a directory listing and the slug is human-readable.</p>
+    <p>Anthropic's Skill documentation also imposed some constraints. The <code>description</code> field, which Claude uses to decide whether to invoke the Skill, has a 200-character maximum. The original description was well over that. Getting it down to 188 characters while keeping enough trigger phrases took some careful wording.</p>
 
     <h2>Sources &amp; References</h2>
     <ul>
-      <li><a href="https://support.anthropic.com/en/articles/11179463-how-to-create-custom-skills" target="_blank" rel="noopener noreferrer">How to create custom Skills &mdash; Claude Help Center</a> &mdash; official spec for Skill structure, metadata limits, and packaging</li>
-      <li><a href="https://www.freecodecamp.org/news/how-to-write-a-great-technical-blog-post-414c414b67f6/" target="_blank" rel="noopener noreferrer">How to write a great technical blog post &mdash; freeCodeCamp</a> &mdash; informed the TLDR and scanability decisions</li>
-      <li><a href="https://devrelbridge.com/blog/developer-friendly-blog-post-structure" target="_blank" rel="noopener noreferrer">Developer-Friendly Blog Post Structure &mdash; DevRel Bridge</a> &mdash; reinforced the emphasis on working code examples and clear headings</li>
+      <li><a href="https://support.anthropic.com/en/articles/11179463-how-to-create-custom-skills" target="_blank" rel="noopener noreferrer">How to create custom Skills - Claude Help Center</a> - official spec for Skill structure, metadata limits, and packaging</li>
+      <li><a href="https://www.freecodecamp.org/news/how-to-write-a-great-technical-blog-post-414c414b67f6/" target="_blank" rel="noopener noreferrer">How to write a great technical blog post - freeCodeCamp</a> - informed the TL;DR and scanability decisions</li>
+      <li><a href="https://devrelbridge.com/blog/developer-friendly-blog-post-structure" target="_blank" rel="noopener noreferrer">Developer-Friendly Blog Post Structure - DevRel Bridge</a> - reinforced the emphasis on working code examples and clear headings</li>
     </ul>
 
     <h2>Outcome</h2>
-    <p>The finished Skill is a single <code>SKILL.md</code> file at 141 lines. It produces standalone HTML blog posts with consistent structure, enforced voice guidelines, proper code formatting, metadata for search engines, and a mandatory TL;DR. The workflow is: have a conversation, say "write this up", iterate on drafts, publish the final HTML file.</p>
-    <p>The Skill is generic &mdash; it doesn't assume a specific author, domain, or hosting platform. Any Claude user can drop it into their Skills directory and start producing posts from their conversations.</p>
+    <p>The finished Skill is a single <code>SKILL.md</code> file at 141 lines. It produces standalone HTML blog posts with consistent structure, enforced voice guidelines, proper code formatting, metadata for search engines, and a mandatory TL;DR. The workflow: have a conversation, say "write this up", iterate on drafts, publish the final HTML file.</p>
+    <p>The Skill is generic. It doesn't assume a specific author, domain, or hosting platform. Any Claude user can drop it into their Skills directory and start producing posts from their conversations.</p>
 
     <h2>Open Questions</h2>
-    <p><strong>CSS coupling.</strong> The inline styles make posts readable standalone, but they'll clash with any site that has its own stylesheet. A future version might strip the inline CSS and assume the site handles presentation, or offer a flag to toggle between standalone and embedded modes.</p>
-    <p><strong>Multi-post conversations.</strong> The Skill suggests splitting when a conversation covers multiple topics, but doesn't define how to handle that mechanically. Should it produce multiple files in one pass? Ask the user to pick which thread to write up first?</p>
-    <p><strong>Syntax highlighting.</strong> The HTML uses <code>class="language-xx"</code> on code blocks, which libraries like Prism.js and highlight.js can pick up. But without one of those libraries loaded, code blocks are unstyled monospace. Worth considering whether to bundle a lightweight highlighter or leave that to the site.</p>
+    <p><strong>CSS coupling.</strong> The inline styles make posts readable on their own, but they'll clash with any site that has its own stylesheet. A future version could strip the inline CSS and let the site handle presentation, or offer a flag to toggle between standalone and embedded modes.</p>
+    <p><strong>Multi-post conversations.</strong> The Skill suggests splitting when a conversation covers multiple topics, but doesn't define the mechanics. Should it produce multiple files in one pass? Ask the user to pick which thread to write up first?</p>
+    <p><strong>Syntax highlighting.</strong> The HTML uses <code>class="language-xx"</code> on code blocks, which libraries like Prism.js and highlight.js can pick up. But without one of those libraries loaded, code blocks are just unstyled monospace. Worth considering whether to bundle a lightweight highlighter or leave that to the site.</p>
   </article>
 </body>
 </html>

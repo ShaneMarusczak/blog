@@ -20,13 +20,13 @@ body {
 /* --- Icons --- */
 
 #githubicon {
-  position: absolute;
+  position: fixed;
   top: 40px;
   right: 6vw;
   width: 60px;
   height: 60px;
   transition: 1.5s;
-  z-index: 0;
+  z-index: 10;
   background-color: transparent;
   border-radius: 100px;
 }
@@ -37,13 +37,13 @@ body {
 }
 
 #homeIcon {
-  position: absolute;
+  position: fixed;
   top: 40px;
   left: 6vw;
   width: 60px;
   height: 60px;
   transition: 1.5s;
-  z-index: 0;
+  z-index: 10;
   background-color: transparent;
 }
 
@@ -160,21 +160,6 @@ pre code {
   padding: 0;
   font-size: 0.85em;
   line-height: 1.5;
-}
-
-/* --- Back link --- */
-
-.back {
-  display: inline-block;
-  font-family: "Roboto Mono", monospace;
-  font-size: 0.82rem;
-  color: #333;
-  text-decoration: none;
-  margin-bottom: 1.5rem;
-}
-
-.back:hover {
-  text-decoration: underline;
 }
 
 /* --- Responsive --- */
