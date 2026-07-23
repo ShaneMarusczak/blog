@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="What nine Claude Code session transcripts across four Rust projects reveal about building software with AI: prime with context, plan twice, delegate in numbered batches, review in repeated passes, and keep the hands-on testing for yourself.">
+  <meta name="keywords" content="ai-workflow, claude code, prompting, rust, software engineering, ai pair programming">
+  <meta name="date" content="2026-07-22">
+  <meta name="category" content="ai-workflow">
+  <title>How I Build Software with AI, According to My Transcripts</title>
+  <link rel="stylesheet" href="post.css">
+</head>
+<body>
+  <a id="homeLink" href="../" rel="noreferrer">
+    <img id="homeIcon" src="../house-icon.png" alt="home" />
+  </a>
+  <a id="gitHubLink" href="https://github.com/ShaneMarusczak/blog" target="_blank" rel="noreferrer">
+    <img id="githubicon" src="../github-icon.png" alt="github" />
+  </a>
+  <article>
+
+    <h1>How I Build Software with AI, According to My Transcripts</h1>
+    <p class="meta">2026-07-22 &middot; ai-workflow</p>
+
+    <div class="tldr">
+      <strong>TL;DR:</strong> I mined my own Claude Code transcripts &mdash; nine sessions across four Rust projects &mdash; to find out what my actual workflow is, as opposed to what I'd claim it is. A consistent loop fell out: prime with context, plan twice before building, delegate in numbered batches, run repeated review passes with fresh eyes, and never give up the hands-on testing. The prompts quoted below are verbatim, typos included. They're the evidence.
+    </div>
+
+    <h2>Context</h2>
+    <p>Over the past few months I've built and hardened four Rust projects with Claude Code: <a href="https://github.com/ShaneMarusczak/rusty-maths" target="_blank" rel="noopener noreferrer">rusty-maths</a> (a math library with an expression engine), <a href="https://github.com/ShaneMarusczak/rm-repl" target="_blank" rel="noopener noreferrer">rm-repl</a> (a terminal calculator and grapher built on it), a terminal chat client, and <a href="https://github.com/ShaneMarusczak/pi-watcher" target="_blank" rel="noopener noreferrer">pi-watcher</a> (a network watcher daemon for a Raspberry Pi). Real projects, real merged PRs, one of them running on my network right now.</p>
+    <p>Everyone has opinions about how to build software with AI. Most of that advice is generic, and most of it is written from memory, which flatters. But every Claude Code session leaves a transcript on disk. So instead of writing down what I think my workflow is, I had Claude extract every prompt I typed &mdash; about 700 of them &mdash; and look for the patterns that repeated across projects and correlated with the sessions that produced the best results.</p>
+
+    <h2>Problem</h2>
+    <p>The question is not &ldquo;can AI write code?&rdquo; It obviously can. The question is what the human side of the loop looks like when the collaboration works &mdash; specifically, which habits show up in the sessions that shipped, and which prompts preceded the results I was happiest with.</p>
+
+    <h2>Approach</h2>
+    <p>The transcripts are JSONL files under <code>~/.claude/projects/</code>. Filter to user-typed messages, strip the tool noise, and what's left is a longitudinal record of one practitioner prompting one AI across four codebases. Patterns that appear once are anecdotes. Patterns that appear in every project, unprompted, months apart &mdash; that's a method, even if I never wrote it down.</p>
+
+    <h2>Process</h2>
+
+    <h3>1. Prime before you ask</h3>
+    <p>Almost every session starts the same way: not with a task, but with context-loading.</p>
+    <pre><code>HI Fable, I want you to familiarize yourself wit this codebase to prepare to do a new feature</code></pre>
+    <pre><code>please read the other sibiling rust projects in the same parent directory to get ideas on how i code, look at the cargo.toml for ideas as well</code></pre>
+    <p>That second one is the interesting habit: pointing the AI at the <em>rest of the portfolio</em>, not just the repo at hand. &ldquo;How I code&rdquo; lives across projects &mdash; the lint rules, the CI shape, the naming instincts. Loading it up front means the generated code lands in my style instead of a generic one. The payoff showed up concretely when I asked, for pi-watcher, <em>&ldquo;looking at my other codebases, what CI would be good for this?&rdquo;</em> &mdash; the answer compared all four repos, kept the best ideas from each, and flagged which older repos should borrow improvements <em>back</em>.</p>
+
+    <h3>2. Plan twice, then build once</h3>
+    <p>The biggest single result in these transcripts &mdash; a ground-up rewrite of rusty-maths' function-catalog into a single-source-of-truth macro system &mdash; came from the most heavily front-loaded planning. The sequence of prompts, in order:</p>
+    <pre><code>Give me a solid plan first
+I want you to do a second pass over this idea and make sure it is robust, I love it but want to make sure first
+THis is looking very good, one final pass to make sure. I trust you but the more we prep the better it goes
+Okay, I want you to look over the whole chat one more time and do a solid, granular to do list of what you will do.</code></pre>
+    <p>Three review passes on the <em>plan</em> before a line of code changed. Then, and only then: <em>&ldquo;agressive yes, go big or go home. make sure you do this in a branch so I can revert if needed&rdquo;</em> &mdash; maximum ambition paired with a cheap undo. My reaction afterward, verbatim: <em>&ldquo;it is wild to me that my simple ask lead to a total rewrite&rdquo;</em> &mdash; and the rewrite stuck. The pattern generalizes: effort spent scrutinizing the plan buys the right to be aggressive in the execution.</p>
+
+    <h3>3. Delegate in numbered batches</h3>
+    <p>The single most common prompt shape in the whole corpus: the AI proposes a menu, I pick by number.</p>
+    <pre><code>Do 1-3, 6,7,8,9, sqrt, pop and the catch all.
+do 1-3 and then lets talk
+Do A and I want to think more about B while you do it
+no 5 yet</code></pre>
+    <p>This keeps the division of labor clean. The AI is good at enumerating options exhaustively; I'm the one with taste and context about what this project actually needs. Every decision stays mine, but I never have to generate the option space myself. Note the last two: batching also creates natural checkpoints (&ldquo;then lets talk&rdquo;) and lets me defer decisions without losing them.</p>
+
+    <h3>4. The second-pass ritual</h3>
+    <p>After every substantial build, the same move appears &mdash; in every project, phrased slightly differently:</p>
+    <pre><code>Do a second pass to make sure everything you just did is high quality, no new features, make sure you did your best work
+please go back over everything you just built in a highly granular fashion and make sure that it is top notch
+do another pass to make sure the code is tight</code></pre>
+    <p>The key constraint is <em>&ldquo;no new features&rdquo;</em> &mdash; the second pass is a different activity from building, and mixing them dilutes both. For pi-watcher I escalated the ritual: switch models mid-session and ask for <em>&ldquo;fresh eyes&rdquo;</em>, on the theory that a different model has different blind spots. Same instinct as asking a different colleague to review, and it repeatedly surfaced things the builder-pass had glossed over.</p>
+
+    <h3>5. Keep the surface for yourself</h3>
+    <p>One thing I consistently refuse to delegate: being the user.</p>
+    <pre><code>dont run any terminal session, do all the testing you can with tools and then tell me what you want me to check visually
+dont worry about testing the repl, i can do that visually</code></pre>
+    <p>Then I sit in the actual REPL, type real expressions, and paste the output back. That's how the best bug of the batch was found. The AI had built span-carrying errors that pointed at the offending token &mdash; and my manual poking noticed that <code>sin(2,2)</code> failed with a generic stack error while <code>ch(2,2,2)</code> failed with a precise span. My entire bug report: <em>&ldquo;Hmmm, sin/cos dont act like ch&rdquo;</em>. That one line of observed inconsistency drove a consistency refactor across every function in the catalog. Tools can run tests; only the human notices that something <em>feels</em> wrong at the surface.</p>
+
+    <h3>6. Argue about boundaries, not syntax</h3>
+    <p>The conversations that most shaped the architecture weren't about code at all &mdash; they were about where things belong:</p>
+    <pre><code>user defined equations that are callable just like sin etc... that may be for the repl layer though... yeah that doesnt belong in this engine
+do you think the pipe belongs in the repl layer? that consumes this library?
+yeah, this is supposed to be a functional library that gives the calculations, not user state management</code></pre>
+    <p>Notice I'm thinking out loud and answering my own question mid-prompt. The AI's role here is sounding board with perfect knowledge of the codebase &mdash; it pushes back when the boundary I'm drawing contradicts something already in the code. Design details got the same treatment: when a proposed pipe operator <code>|&gt;</code> bothered me (<em>&ldquo;is there a simpler char to use then |&gt;? that is hard to type&rdquo;</em>), the fix came from me (<em>&ldquo;what about just |, unix style&rdquo;</em>), and the synthesis &mdash; accept both &mdash; from the conversation.</p>
+
+    <h3>7. Fence the scope</h3>
+    <p>Scattered through every session, small guardrail prompts:</p>
+    <pre><code>dont touch rmr yet
+dont make any functional changes, but just make sure the whole app is currently in allignment with the rest of it
+To be honest, I only truly care about the equation work, the rest is less important to be highly robust. Filter down your review to just that
+dont custom fit it so tightly to my internet, make the tiles configureable</code></pre>
+    <p>Each one is cheap to type and prevents an entire category of unwanted work. The last one is my favorite: catching the AI over-fitting a solution to my exact situation and steering it toward the general tool. Telling the AI what <em>not</em> to do turns out to be as load-bearing as telling it what to do.</p>
+
+    <h3>8. Own the code anyway</h3>
+    <p>The strangest and maybe most valuable session in the corpus produced no code at all. I walked Claude through the terminal-graphing internals of rm-repl &mdash; code I hand-rolled before AI assistance &mdash; and just&hellip; talked about it.</p>
+    <pre><code>i was pretty proud to hand roll all that normalization stuff to go from real coordinates to braille
+what do you think is the most blessed line of code here
+yeah that visited flag was an idea i came up with when I was making minesweeper in the browser</code></pre>
+    <p>Part rubber-duck, part code archaeology, part &mdash; honestly &mdash; wanting a knowledgeable audience for work I was proud of. But it's also maintenance of ownership: if the AI writes more and more of the code, deliberately re-reading and re-explaining the codebase is how it stays <em>mine</em>. The inverse prompt shows up too: <em>&ldquo;tell me how the new algorithm works, i think I have seen it before but i dont remember&rdquo;</em> &mdash; never letting generated code stay unexplained.</p>
+
+    <h3>9. Know when to stop</h3>
+    <p>Mid-way through planning a linear-algebra expansion, one prompt kills the whole thread:</p>
+    <pre><code>ykw, I am going to just use matlab</code></pre>
+    <p>The cheapest feature is the one you realize you shouldn't build. AI makes building so frictionless that the discipline of <em>not</em> building matters more, not less.</p>
+
+    <h2>Sources &amp; References</h2>
+    <ul>
+      <li><a href="https://github.com/ShaneMarusczak/rusty-maths" target="_blank" rel="noopener noreferrer">rusty-maths</a> &mdash; the math library; site of the macro rewrite and spanned-error work</li>
+      <li><a href="https://github.com/ShaneMarusczak/rm-repl" target="_blank" rel="noopener noreferrer">rm-repl</a> &mdash; the REPL/grapher; site of the surface-testing and code-archaeology sessions</li>
+      <li><a href="https://github.com/ShaneMarusczak/pi-watcher" target="_blank" rel="noopener noreferrer">pi-watcher</a> &mdash; the network watcher; site of the fresh-eyes reviews and CI cross-pollination</li>
+      <li>Local Claude Code transcripts under <code>~/.claude/projects/</code> &mdash; the raw evidence, ~700 user prompts across nine sessions</li>
+    </ul>
+
+    <h2>Outcome</h2>
+    <p>Written down, the loop is: <strong>prime &rarr; plan (twice) &rarr; delegate in batches &rarr; build &rarr; second pass &rarr; fresh eyes &rarr; test the surface yourself &rarr; commit</strong>. None of it was designed; all of it was discovered in the transcripts, repeating across four projects that didn't share a session between them.</p>
+    <p>The three best results each trace to a different part of the loop. The rusty-maths rewrite came from the planning ritual &mdash; the most scrutinized plan produced the most aggressive change I trusted. The spanned-error system came from curiosity plus delegation &mdash; <em>&ldquo;I quite like the position carrying error.. expand on it for me&rdquo;</em> followed by <em>&ldquo;Go all out&rdquo;</em> turned an implementation detail into the library's flagship feature. And pi-watcher came from the priming pattern at its purest: the project started as three sentences of plain English about my home network and the thing I couldn't see &mdash; <em>&ldquo;I have no way of knowing if the cellular internet is bombing out&rdquo;</em>. No spec, no architecture. Just an honest description of the problem, context about the environment, and the loop applied from there.</p>
+
+    <h2>Open Questions</h2>
+    <p>Does the second-pass ritual have diminishing returns? By pass three the findings get cosmetic, but the pi-watcher fresh-eyes passes with a different model kept finding real issues &mdash; I don't yet know whether the value is in the repetition or the model diversity.</p>
+    <p>How much of this loop should become automation? Some already has: the review passes are drifting into skills and slash commands. But the parts I refuse to delegate &mdash; surface testing, boundary arguments, the kill decision &mdash; may be load-bearing precisely because they're manual.</p>
+    <p>And the older exploratory chats (CUDA experiments among them) live outside these local transcripts; mining those is a follow-up post if the patterns there disagree with the ones here.</p>
+
+    <hr>
+
+    <footer>
+      <p><em>This post was written by Claude from my actual Claude Code session transcripts &mdash; which makes it the workflow describing itself: I primed it with the corpus, asked for the pattern, picked from its menu of candidate topics, fenced the scope, and reviewed the draft. The prompts quoted are mine, verbatim, typos and all. That's deliberate &mdash; the whole point is what the transcripts actually say, not what a cleaned-up version would claim.</em></p>
+    </footer>
+
+  </article>
+</body>
+</html>

@@ -1,5 +1,12 @@
 [
   {
+    "file": "2026-07-22-how-i-build-software-with-ai.html",
+    "title": "How I Build Software with AI, According to My Transcripts",
+    "date": "2026-07-22",
+    "category": "ai-workflow",
+    "description": "Mining ~700 of my own prompts from nine Claude Code sessions across four Rust projects to find the workflow I actually use: prime with context, plan twice, delegate in numbered batches, review with fresh eyes, and keep the hands-on testing for yourself."
+  },
+  {
     "file": "2026-04-29-three-threads-from-onboarding-a-cnc.html",
     "title": "Three Threads from Onboarding a CNC",
     "date": "2026-04-29",
