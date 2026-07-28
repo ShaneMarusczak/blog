@@ -1,0 +1,5 @@
+# Claude Code local working directory (worktrees, session state, launch config)
+.claude/
+
+# macOS
+.DS_Store

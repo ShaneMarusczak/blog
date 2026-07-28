@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>shane's blog</title>
+  <subtitle>Notes on software, tools, and building things.</subtitle>
+  <link rel="self" type="application/atom+xml" href="https://shanemarusczak.github.io/blog/feed.xml"/>
+  <link rel="alternate" type="text/html" href="https://shanemarusczak.github.io/blog/"/>
+  <id>https://shanemarusczak.github.io/blog/</id>
+  <updated>2026-07-27T00:00:00Z</updated>
+  <author><name>Shane Marusczak</name></author>
+  <entry>
+    <title>Instrument First: Ben Eater's 6502 on Breadboards</title>
+    <link rel="alternate" type="text/html" href="https://shanemarusczak.github.io/blog/posts/2026-07-27-instrument-first-ben-eaters-6502.html"/>
+    <id>https://shanemarusczak.github.io/blog/posts/2026-07-27-instrument-first-ben-eaters-6502.html</id>
+    <updated>2026-07-27T00:00:00Z</updated>
+    <published>2026-07-27T00:00:00Z</published>
+    <category term="hardware"/>
+    <summary>Notes and photos from building Ben Eater's 6502 breadboard computer: the parts, the memory map, the wire colors, and the bus monitor and single-step clock that went in before any of the computer itself.</summary>
+  </entry>
+  <entry>
+    <title>How I Build Software with AI, According to My Transcripts</title>
+    <link rel="alternate" type="text/html" href="https://shanemarusczak.github.io/blog/posts/2026-07-22-how-i-build-software-with-ai.html"/>
+    <id>https://shanemarusczak.github.io/blog/posts/2026-07-22-how-i-build-software-with-ai.html</id>
+    <updated>2026-07-22T00:00:00Z</updated>
+    <published>2026-07-22T00:00:00Z</published>
+    <category term="ai-workflow"/>
+    <summary>Mining ~700 of my own prompts from nine Claude Code sessions across four Rust projects to find the workflow I actually use: prime with context, plan twice, delegate in numbered batches, review with fresh eyes, and keep the hands-on testing for yourself.</summary>
+  </entry>
+  <entry>
+    <title>Three Threads from Onboarding a CNC</title>
+    <link rel="alternate" type="text/html" href="https://shanemarusczak.github.io/blog/posts/2026-04-29-three-threads-from-onboarding-a-cnc.html"/>
+    <id>https://shanemarusczak.github.io/blog/posts/2026-04-29-three-threads-from-onboarding-a-cnc.html</id>
+    <updated>2026-04-29T00:00:00Z</updated>
+    <published>2026-04-29T00:00:00Z</published>
+    <category term="machining"/>
+    <summary>Three threads pulled from onboarding a desktop CNC: chipquake (fracture mechanics through self-organized criticality), the substrate boundary (why community knowledge architecture depends on moderation), and the long bet (machining as cognitive grounding).</summary>
+  </entry>
+  <entry>
+    <title>What 30+ Gandalf Challenges Taught Me About Prompt Injection</title>
+    <link rel="alternate" type="text/html" href="https://shanemarusczak.github.io/blog/posts/2026-02-23-gandalf-prompt-injection-taxonomy.html"/>
+    <id>https://shanemarusczak.github.io/blog/posts/2026-02-23-gandalf-prompt-injection-taxonomy.html</id>
+    <updated>2026-02-23T00:00:00Z</updated>
+    <published>2026-02-23T00:00:00Z</published>
+    <category term="ai-security"/>
+    <summary>A taxonomy of prompt injection attack patterns derived from 30+ Gandalf Agent Breaker challenges, organized by attack surface rather than challenge name.</summary>
+  </entry>
+  <entry>
+    <title>Building a Blog Post Skill for Claude</title>
+    <link rel="alternate" type="text/html" href="https://shanemarusczak.github.io/blog/posts/2026-02-23-building-a-blog-post-skill-for-claude.html"/>
+    <id>https://shanemarusczak.github.io/blog/posts/2026-02-23-building-a-blog-post-skill-for-claude.html</id>
+    <updated>2026-02-23T00:00:00Z</updated>
+    <published>2026-02-23T00:00:00Z</published>
+    <category term="ai-workflow"/>
+    <summary>How to build a custom Claude skill that turns conversations into structured dev blog posts using an expanded STAR framework.</summary>
+  </entry>
+</feed>

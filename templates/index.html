@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A collection of posts on software engineering, tools, and ideas.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="shane's blog">
+  <meta property="og:title" content="shane's blog">
+  <meta property="og:description" content="A collection of posts on software engineering, tools, and ideas.">
+  <meta property="og:url" content="{{site}}/">
+  <link rel="canonical" href="{{site}}/">
+  <link rel="alternate" type="application/atom+xml" title="shane's blog" href="feed.xml">
+  <title>shane's blog</title>
+  <link rel="stylesheet" href="base.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+{{masthead}}
+
+  <p class="tagline">Notes on software, tools, and building things.</p>
+
+  <main id="posts" class="container">
+    <ul class="post-list">
+{{postlist}}
+    </ul>
+  </main>
+
+{{footer}}
+</body>
+</html>

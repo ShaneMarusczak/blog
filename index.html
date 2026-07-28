@@ -4,42 +4,67 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="A collection of posts on software engineering, tools, and ideas.">
-  <title>Blog</title>
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="shane's blog">
+  <meta property="og:title" content="shane's blog">
+  <meta property="og:description" content="A collection of posts on software engineering, tools, and ideas.">
+  <meta property="og:url" content="https://shanemarusczak.github.io/blog/">
+  <link rel="canonical" href="https://shanemarusczak.github.io/blog/">
+  <link rel="alternate" type="application/atom+xml" title="shane's blog" href="feed.xml">
+  <title>shane's blog</title>
+  <link rel="stylesheet" href="base.css">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <a id="homeLink" href="https://marusczak.com" rel="noreferrer">
-    <img id="homeIcon" src="house-icon.png" alt="home" />
-  </a>
-  <a id="gitHubLink" href="https://github.com/ShaneMarusczak/blog" target="_blank" rel="noreferrer">
-    <img id="githubicon" src="github-icon.png" alt="github" />
-  </a>
-  <div class="container">
-    <header>
-      <h1><a href="/">shane's blog</a></h1>
-      <p>Notes on software, tools, and building things.</p>
-    </header>
+  <header class="masthead">
+    <div class="bar">
+      <h1 class="wordmark"><a href="./" aria-current="page">shane's blog</a></h1>
+      <nav class="bar-nav" aria-label="Site">
+        <a href="https://github.com/ShaneMarusczak/blog" target="_blank" rel="noopener noreferrer" aria-label="Source on GitHub">
+          <svg class="gh" width="44" height="44" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+        </a>
+      </nav>
+    </div>
+  </header>
 
-    <main id="posts">
-      <noscript>
-        <p>This site requires JavaScript to load the post list. You can also browse the <a href="posts/">posts directory</a> directly.</p>
-      </noscript>
-    </main>
+  <p class="tagline">Notes on software, tools, and building things.</p>
 
-    <footer>
-      <p>Plain HTML. No frameworks.</p>
-    </footer>
-  </div>
+  <main id="posts" class="container">
+    <ul class="post-list">
+      <li class="post-item"><a href="posts/2026-07-27-instrument-first-ben-eaters-6502.html">
+        <h2 class="post-title">Instrument First: Ben Eater's 6502 on Breadboards</h2>
+        <div class="post-meta"><time datetime="2026-07-27">Jul 27, 2026</time><span class="dot">&middot;</span><span class="category">hardware</span></div>
+        <div class="post-description">Notes and photos from building Ben Eater's 6502 breadboard computer: the parts, the memory map, the wire colors, and the bus monitor and single-step clock that went in before any of the computer itself.</div>
+      </a></li>
+      <li class="post-item"><a href="posts/2026-07-22-how-i-build-software-with-ai.html">
+        <h2 class="post-title">How I Build Software with AI, According to My Transcripts</h2>
+        <div class="post-meta"><time datetime="2026-07-22">Jul 22, 2026</time><span class="dot">&middot;</span><span class="category">ai-workflow</span></div>
+        <div class="post-description">Mining ~700 of my own prompts from nine Claude Code sessions across four Rust projects to find the workflow I actually use: prime with context, plan twice, delegate in numbered batches, review with fresh eyes, and keep the hands-on testing for yourself.</div>
+      </a></li>
+      <li class="post-item"><a href="posts/2026-04-29-three-threads-from-onboarding-a-cnc.html">
+        <h2 class="post-title">Three Threads from Onboarding a CNC</h2>
+        <div class="post-meta"><time datetime="2026-04-29">Apr 29, 2026</time><span class="dot">&middot;</span><span class="category">machining</span></div>
+        <div class="post-description">Three threads pulled from onboarding a desktop CNC: chipquake (fracture mechanics through self-organized criticality), the substrate boundary (why community knowledge architecture depends on moderation), and the long bet (machining as cognitive grounding).</div>
+      </a></li>
+      <li class="post-item"><a href="posts/2026-02-23-gandalf-prompt-injection-taxonomy.html">
+        <h2 class="post-title">What 30+ Gandalf Challenges Taught Me About Prompt Injection</h2>
+        <div class="post-meta"><time datetime="2026-02-23">Feb 23, 2026</time><span class="dot">&middot;</span><span class="category">ai-security</span></div>
+        <div class="post-description">A taxonomy of prompt injection attack patterns derived from 30+ Gandalf Agent Breaker challenges, organized by attack surface rather than challenge name.</div>
+      </a></li>
+      <li class="post-item"><a href="posts/2026-02-23-building-a-blog-post-skill-for-claude.html">
+        <h2 class="post-title">Building a Blog Post Skill for Claude</h2>
+        <div class="post-meta"><time datetime="2026-02-23">Feb 23, 2026</time><span class="dot">&middot;</span><span class="category">ai-workflow</span></div>
+        <div class="post-description">How to build a custom Claude skill that turns conversations into structured dev blog posts using an expanded STAR framework.</div>
+      </a></li>
+    </ul>
+  </main>
 
-  <script src="app.js"></script>
-
-  <!--
-    POST FORMAT: Each post in posts/ should be a standalone HTML file with these meta tags:
-      <meta name="date" content="YYYY-MM-DD">
-      <meta name="category" content="your-category">
-      <meta name="description" content="A short summary of the post.">
-      <title>Your Post Title</title>
-    File naming convention: YYYY-MM-DD-slug-title.html
-  -->
+  <footer class="sitefoot">
+    <nav class="bar-nav" aria-label="Site">
+      <a href="./">home</a>
+      <a href="https://github.com/ShaneMarusczak/blog" target="_blank" rel="noopener noreferrer">github</a>
+    </nav>
+    <p>Plain HTML. No frameworks. &middot; <a href="https://marusczak.com" target="_blank" rel="noopener noreferrer">marusczak.com</a></p>
+  </footer>
 </body>
 </html>

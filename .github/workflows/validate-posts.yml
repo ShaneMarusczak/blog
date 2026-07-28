@@ -1,8 +1,9 @@
-name: Validate posts.json
+name: Validate site
 
 on:
   push:
     branches: [main]
+  pull_request:
 
 jobs:
   validate:
@@ -10,19 +11,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Check posts.json matches posts/ directory
+      - name: Validate sources
+        run: python3 tools/validate.py
+
+      - name: Check generated files are current
         run: |
-          html_count=$(find posts -maxdepth 1 -name '*.html' | wc -l | tr -d ' ')
-          json_count=$(python3 -c "import json; print(len(json.load(open('posts.json'))))")
-
-          echo "HTML files in posts/: $html_count"
-          echo "Entries in posts.json: $json_count"
-
-          if [ "$html_count" != "$json_count" ]; then
+          python3 tools/build.py
+          if ! git diff --quiet; then
             echo ""
-            echo "MISMATCH: posts.json has $json_count entries but posts/ has $html_count HTML files."
-            echo "Update posts.json before pushing."
+            echo "Generated files are out of date with the sources."
+            echo "Run 'python3 tools/build.py' and commit the result."
+            echo ""
+            git diff --stat
             exit 1
           fi
-
-          echo "OK — counts match."
+          echo "OK - generated files match the sources."
