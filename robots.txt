@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://shanemarusczak.github.io/blog/sitemap.xml

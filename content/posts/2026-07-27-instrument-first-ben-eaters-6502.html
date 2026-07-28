@@ -1,0 +1,95 @@
+    <div class="tldr">
+      <strong>TL;DR:</strong> I built <a href="https://eater.net/6502" target="_blank" rel="noopener noreferrer">Ben Eater's 6502 breadboard computer</a> a while back. Before wiring up the computer itself I built the two things the kit doesn't come with, an Arduino bus monitor and a clock you can advance one pulse at a time, and left both attached the whole way through. One bug in the entire build: a wire sitting one pin off. This is mostly parts and photos, written down before the rest of it goes.
+    </div>
+
+    <h2>What's in the box</h2>
+
+    <p>Ben Eater sells a kit that builds a working 6502 computer on breadboards. A WDC W65C02S for the processor, a 65C22 VIA for I/O, an AT28C256 EEPROM, 32K of static RAM, a 1602A character LCD, a 1 MHz oscillator can, three BusBoard BB830 breadboards, and a single 74HC00 quad NAND that handles all of the address decoding. The 6502 is the chip out of the Apple II and the C64 and the NES.</p>
+
+    <p>Not in the box: a power supply, an EEPROM programmer, or any way to see what the machine is doing. Ben sells the first two separately. For the third he points you at his clock module kit and an Arduino Mega, recommended &ldquo;if you want to follow all of the experiments and debugging in the videos.&rdquo;</p>
+
+    <p>I bought both and built them first.</p>
+
+    <figure>
+      <img src="img/IMG_1306.jpg" width="1600" height="900" loading="lazy" alt="An Arduino Mega 2560 connected by rainbow ribbon cable to a bare 6502 on a breadboard, with a 555-based clock module on the board above it.">
+      <figcaption>Everything on this board is either the CPU or a way to watch the CPU.</figcaption>
+    </figure>
+
+    <h2>Watching a CPU do nothing</h2>
+
+    <p>The first step isn't a program. Run all eight data lines through 1k resistors so the bus reads <code>$EA</code> no matter what gets asked for. <code>$EA</code> is <code>NOP</code>. There's no ROM and no RAM on the board yet and it doesn't matter, because every address comes back &ldquo;do nothing.&rdquo; So the processor does nothing, forever. The program counter climbs, the address bus counts up through 64K, rolls over, and starts again.</p>
+
+    <p>The Mega has the pins to watch all sixteen address lines, all eight data lines and the read/write signal at once, and it prints a line to serial on every cycle.</p>
+
+    <p>The clock module is three 555 timers. One astable for free running, one monostable for a debounced manual pulse, one bistable to switch between them, with some 74LS logic combining the outputs. Speed pot, run/step slide switch, button. In step mode the machine moves one clock pulse per press.</p>
+
+    <p>I ran on that step clock for the whole build and only put the 1 MHz can in at the end.</p>
+
+    <figure>
+      <img src="img/IMG_1321.jpg" width="1200" height="1600" loading="lazy" alt="Eight red LEDs in a row with series resistors, driven by a 65C22 VIA on a breadboard, with the clock module still attached above.">
+      <figcaption>Eight LEDs on a VIA port, step clock still wired in above them.</figcaption>
+    </figure>
+
+    <h2>Eight LEDs</h2>
+
+    <p>The first stage that needs the thing to actually be a computer: a program sitting in the EEPROM, the VIA wired up, address decoding working, and eight red LEDs with series resistors on a VIA port.</p>
+
+    <p>Three NAND gates out of the one 74HC00 produce the entire memory map:</p>
+
+    <pre><code>$0000&ndash;$3FFF   RAM   16K of a 32K chip; the rest is unreachable
+$4000&ndash;$5FFF   &ndash;     nothing
+$6000&ndash;$600F   VIA   16 registers, mirrored on up through $7FFF
+$8000&ndash;$FFFF   ROM   32K EEPROM, reset vector at the top</code></pre>
+
+    <p>Half the RAM chip can't be addressed and a good chunk of the space is either mirrored or dead. Decoding it properly would take more chips than the whole I/O section.</p>
+
+    <h2>Wire colors</h2>
+
+    <p>Blue for address, teal for data, orange and yellow for control. Picked before the first wire went in and never broken. There's a sixteen-bit address bus and an eight-bit data bus running between four chips on this board, and the color told me which one I was looking at before I traced anything.</p>
+
+    <figure>
+      <img src="img/IMG_1326.jpg" width="1200" height="1600" loading="lazy" alt="The finished 6502 breadboard computer displaying Hello, world! on a 1602 character LCD, with a 1 MHz oscillator can and a breadboard power supply module.">
+      <figcaption>Finished. A 1 MHz can sits where the instrumentation used to be.</figcaption>
+    </figure>
+
+    <h2>Hello, world</h2>
+
+    <p>The LCD is a 1602A driven entirely off the VIA in 8-bit mode. All eight data lines to Port B, register select and read/write and enable to Port A. Eleven signal wires in one unbroken run across the header, plus a 10k trim pot on the contrast pin. The cursor block still sitting after the exclamation point is the display doing the last thing it was told.</p>
+
+    <p>I wrote the program rather than assembling the source Ben provides. I followed the video to get moving and read the HD44780 and 65C22 datasheets to understand what I was writing. <code>vasm</code> to assemble it, a TL866II from XGecu to burn it. That source is gone. It lived on a machine I no longer have and never went into version control.</p>
+
+    <h3>Two things that aren't in the manual</h3>
+
+    <p>The RAM sits in a riser. I snapped a pin clean off the SRAM that came with the kit, which is what happens when you lever a 28-pin DIP out of a breadboard with your fingers a few too many times. The replacement is a Hitachi HM62256LP-70, date code 0537, so week 37 of 2005. I seated it in a DIP socket and pressed the socket into the board. The socket takes the insertion stress instead of the chip's legs, and it lifts the package high enough that I can get the back of a pair of tweezers underneath and lift it straight out.</p>
+
+    <p>The power supply was a separate purchase. Early on I ran off the clock module's supply. The finished machine has a breadboard power module with a barrel jack, a fuse and a rail selector.</p>
+
+    <h2>The bug</h2>
+
+    <p>One, the whole way through. A wire was a single pin off from where it belonged.</p>
+
+    <p>I can't tell you which wire, or which pin, or what stage I was at when it turned up. This was a while ago and that part didn't stick.</p>
+
+    <h2>Sources &amp; References</h2>
+    <ul>
+      <li><a href="https://eater.net/6502" target="_blank" rel="noopener noreferrer">Build a 6502 computer</a>, the video series, with schematics, the parts list, and the Arduino bus monitor sketch</li>
+      <li><a href="https://eater.net/8bit/clock" target="_blank" rel="noopener noreferrer">The clock module</a>, from the earlier 8-bit computer series, which is where the single-step clock comes from</li>
+      <li><a href="https://www.westerndesigncenter.com/wdc/documentation/w65c02s.pdf" target="_blank" rel="noopener noreferrer">W65C02S datasheet</a> and <a href="https://www.westerndesigncenter.com/wdc/documentation/w65c22.pdf" target="_blank" rel="noopener noreferrer">W65C22 VIA datasheet</a>, Western Design Center</li>
+      <li><a href="https://www.reddit.com/r/beneater/" target="_blank" rel="noopener noreferrer">r/beneater</a>, where Ben sends troubleshooting questions</li>
+    </ul>
+
+    <h2>Outcome</h2>
+
+    <p>A 6502 on three breadboards running a program I wrote, printing to an LCD. Once it was all working I put the 1 MHz can in and let 'er rip.</p>
+
+    <p>It's not the prettiest. The data bus is a thicket and there are wires taking scenic routes that a tidier person would have run flat against the board. I thought about tearing it down and rebuilding it neatly, and didn't.</p>
+
+    <h2>Open Questions</h2>
+
+    <p>The parts for a from-scratch 8-bit CPU are sitting on a shelf, unbuilt. No processor at all in that one: registers, ALU and microcoded control logic out of discrete 74-series chips. Nothing in the middle of it quietly being correct.</p>
+
+    <hr>
+
+    <footer>
+      <p><em>The prose here is Claude's. Every fact in it is mine. Claude read the photos and Ben's documentation, asked me about fifteen questions, and wrote from the answers. I corrected it twice along the way: it had the LCD in 4-bit mode when it's wired for 8, and it built an argument around diagnosing a dead RAM chip before I remembered I'd just snapped a pin off. Where I couldn't remember something, it says so rather than filling in the gap.</em></p>
+    </footer>

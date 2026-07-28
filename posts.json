@@ -1,30 +1,42 @@
 [
   {
+    "file": "2026-07-27-instrument-first-ben-eaters-6502.html",
+    "title": "Instrument First: Ben Eater's 6502 on Breadboards",
+    "date": "2026-07-27",
+    "category": "hardware",
+    "description": "Notes and photos from building Ben Eater's 6502 breadboard computer: the parts, the memory map, the wire colors, and the bus monitor and single-step clock that went in before any of the computer itself.",
+    "keywords": "6502, ben eater, breadboard computer, hardware, w65c02, 65c22, assembly"
+  },
+  {
     "file": "2026-07-22-how-i-build-software-with-ai.html",
     "title": "How I Build Software with AI, According to My Transcripts",
     "date": "2026-07-22",
     "category": "ai-workflow",
-    "description": "Mining ~700 of my own prompts from nine Claude Code sessions across four Rust projects to find the workflow I actually use: prime with context, plan twice, delegate in numbered batches, review with fresh eyes, and keep the hands-on testing for yourself."
+    "description": "Mining ~700 of my own prompts from nine Claude Code sessions across four Rust projects to find the workflow I actually use: prime with context, plan twice, delegate in numbered batches, review with fresh eyes, and keep the hands-on testing for yourself.",
+    "keywords": "ai-workflow, claude code, prompting, rust, software engineering, ai pair programming"
   },
   {
     "file": "2026-04-29-three-threads-from-onboarding-a-cnc.html",
     "title": "Three Threads from Onboarding a CNC",
     "date": "2026-04-29",
     "category": "machining",
-    "description": "Three threads pulled from onboarding a desktop CNC: chipquake (fracture mechanics through self-organized criticality), the substrate boundary (why community knowledge architecture depends on moderation), and the long bet (machining as cognitive grounding)."
+    "description": "Three threads pulled from onboarding a desktop CNC: chipquake (fracture mechanics through self-organized criticality), the substrate boundary (why community knowledge architecture depends on moderation), and the long bet (machining as cognitive grounding).",
+    "keywords": "cnc, machining, fracture mechanics, self-organized criticality, ai-security, complexity, knowledge management, craft"
   },
   {
-    "file": "taxonomy-v2.html",
+    "file": "2026-02-23-gandalf-prompt-injection-taxonomy.html",
     "title": "What 30+ Gandalf Challenges Taught Me About Prompt Injection",
     "date": "2026-02-23",
     "category": "ai-security",
-    "description": "A taxonomy of prompt injection attack patterns derived from 30+ Gandalf Agent Breaker challenges, organized by attack surface rather than challenge name."
+    "description": "A taxonomy of prompt injection attack patterns derived from 30+ Gandalf Agent Breaker challenges, organized by attack surface rather than challenge name.",
+    "keywords": "prompt-injection, ai-security, gandalf, lakera, red-teaming, adversarial-ai, llm-security"
   },
   {
     "file": "2026-02-23-building-a-blog-post-skill-for-claude.html",
     "title": "Building a Blog Post Skill for Claude",
     "date": "2026-02-23",
     "category": "ai-workflow",
-    "description": "How to build a custom Claude skill that turns conversations into structured dev blog posts using an expanded STAR framework."
+    "description": "How to build a custom Claude skill that turns conversations into structured dev blog posts using an expanded STAR framework.",
+    "keywords": "claude, skills, blog-writing, ai-workflow, prompt-engineering, star-framework"
   }
 ]

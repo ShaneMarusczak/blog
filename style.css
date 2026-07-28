@@ -1,104 +1,9 @@
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  line-height: 1.6;
-  color: #1a1a1a;
-  background-color: #b0c4de;
-  background-image:
-    linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
-  background-size: 32px 32px;
-  padding: 0 1.5rem;
-  min-height: 100vh;
-}
-
-a {
-  color: #1a1a1a;
-}
+/* Landing page only. Shared reset, body, masthead and footer live in
+   base.css, which every page links before this file. */
 
 .container {
   max-width: 44rem;
   margin: 0 auto;
-}
-
-/* --- Icons --- */
-
-#githubicon {
-  position: absolute;
-  top: 40px;
-  right: 6vw;
-  width: 60px;
-  height: 60px;
-  transition: 1.5s;
-  z-index: 0;
-  background-color: transparent;
-  border-radius: 100px;
-}
-
-#githubicon:hover {
-  transform: translateY(-5px);
-  background-color: azure;
-}
-
-#homeIcon {
-  position: absolute;
-  top: 40px;
-  left: 6vw;
-  width: 60px;
-  height: 60px;
-  transition: 1.5s;
-  z-index: 0;
-  background-color: transparent;
-}
-
-#homeIcon:hover {
-  transform: translateY(-5px);
-}
-
-/* --- Header --- */
-
-header {
-  padding: 3rem 0 1.5rem;
-  margin-bottom: 2rem;
-}
-
-header h1 {
-  font-family: "Roboto Mono", monospace;
-  font-size: 1.4rem;
-  font-weight: 700;
-}
-
-header h1 a {
-  color: inherit;
-  text-decoration: none;
-}
-
-header p {
-  color: #333;
-  font-size: 0.92rem;
-  margin-top: 0.25rem;
-}
-
-header nav {
-  margin-top: 0.75rem;
-  font-family: "Roboto Mono", monospace;
-  font-size: 0.8rem;
-  display: flex;
-  gap: 1rem;
-}
-
-header nav a {
-  color: #333;
-  text-decoration: none;
-}
-
-header nav a:hover {
-  text-decoration: underline;
 }
 
 /* --- Posts --- */
@@ -117,14 +22,11 @@ header nav a:hover {
   transition: 500ms;
 }
 
-.boxShadow {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-
 .post-item:hover {
   background-color: lightgray;
   cursor: pointer;
   transform: translateY(-2px);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .post-item a {
@@ -168,68 +70,14 @@ header nav a:hover {
   margin-top: 0.4rem;
 }
 
-/* --- States --- */
-
-.empty-state,
-.error-state {
-  text-align: center;
-  padding: 3rem 2rem;
-  color: #555;
-  background: #faf0e6;
-  border: 1px dashed black;
-  border-radius: 7px;
-  font-size: 0.9rem;
-}
-
-.error-state {
-  color: #cc3333;
-  border-style: solid;
-}
-
-.error-state code {
-  background: aliceblue;
-  padding: 0.1rem 0.4rem;
-  border-radius: 3px;
-  font-size: 0.85em;
-}
-
-/* --- Footer --- */
-
-footer {
-  margin-top: 4rem;
-  padding: 1.5rem 0 3rem;
-  color: #555;
-  font-size: 0.78rem;
-  font-family: "Roboto Mono", monospace;
-}
-
-noscript {
-  display: block;
-}
-
 /* --- Responsive --- */
 
 @media (max-width: 768px) {
-  header {
-    padding: 2rem 0 1.25rem;
-  }
-
-  header h1 {
-    font-size: 1.25rem;
-  }
-
   .post-item a {
     padding: 0.85rem 1rem;
   }
 
   .post-title {
     font-size: 0.95rem;
-  }
-
-  #homeIcon, #githubicon {
-    position: relative;
-    top: auto;
-    left: auto;
-    right: auto;
   }
 }
