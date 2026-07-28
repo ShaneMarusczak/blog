@@ -16,6 +16,21 @@ templates/*.html      │               posts/*.html
 partials/*.html      ─┘               feed.xml, sitemap.xml, robots.txt
 ```
 
+### Why each post appears in two places
+
+You'll see every post twice — once in `content/posts/` and once in `posts/`.
+That's not duplication to fix; it's source vs. output:
+
+- `content/posts/<slug>.html` is the **source**: just the article body you
+  write. No `<head>`, no header/footer, no title or date.
+- `posts/<slug>.html` is the **generated** page: `build.py` wraps that body in
+  the template shell (head, masthead, footer). This is what the browser loads.
+
+Both are committed because **GitHub Pages serves the files as-is — it doesn't
+run a build.** So the finished HTML has to live in the repo. You only ever edit
+the source; the generated files are rewritten by `build.py` (and stale ones are
+pruned automatically). It's the same source/output split Jekyll and Hugo use.
+
 ## Adding a post
 
 1. Write the body in `content/posts/YYYY-MM-DD-slug.html` — the inner HTML of
