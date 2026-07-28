@@ -1,0 +1,13 @@
+# GitHub Pages runs the repo through Jekyll before serving it. This file tells
+# Jekyll to publish only the generated site and leave the build sources out, so
+# content/, templates/, partials/, tools/, and the manifest aren't reachable as
+# URLs. Excluding templates/ also means Jekyll never reads the {{token}}
+# placeholders, so there's nothing for it to misinterpret.
+exclude:
+  - content
+  - templates
+  - partials
+  - tools
+  - posts.json
+  - README.md
+  - CLAUDE.md
