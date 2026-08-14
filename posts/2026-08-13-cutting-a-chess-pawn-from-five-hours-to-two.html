@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Cutting a 4-axis CNC chess pawn's machine time from five hours to about two on an entry-level rotary machine: right-sizing the finishing tool, scoping the toolpath, and why an even faster finish wasn't worth keeping.">
+  <meta name="keywords" content="cnc, 4-axis, rotary machining, cam, toolpath optimization, makera z1, fusion, chess">
+  <meta name="date" content="2026-08-13">
+  <meta name="category" content="machining">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="shane's blog">
+  <meta property="og:title" content="Cutting a Chess Pawn From Five Hours to Two">
+  <meta property="og:description" content="Cutting a 4-axis CNC chess pawn's machine time from five hours to about two on an entry-level rotary machine: right-sizing the finishing tool, scoping the toolpath, and why an even faster finish wasn't worth keeping.">
+  <meta property="og:url" content="https://shanemarusczak.github.io/blog/posts/2026-08-13-cutting-a-chess-pawn-from-five-hours-to-two.html">
+  <meta property="article:published_time" content="2026-08-13">
+  <link rel="canonical" href="https://shanemarusczak.github.io/blog/posts/2026-08-13-cutting-a-chess-pawn-from-five-hours-to-two.html">
+  <link rel="alternate" type="application/atom+xml" title="shane's blog" href="../feed.xml">
+  <title>Cutting a Chess Pawn From Five Hours to Two</title>
+  <link rel="stylesheet" href="../base.css">
+  <link rel="stylesheet" href="post.css">
+</head>
+<body>
+  <header class="masthead">
+    <div class="bar">
+      <a class="wordmark" href="../">shane's blog</a>
+      <nav class="bar-nav" aria-label="Site">
+        <a href="https://github.com/ShaneMarusczak/blog" target="_blank" rel="noopener noreferrer" aria-label="Source on GitHub">
+          <svg class="gh" width="44" height="44" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+        </a>
+      </nav>
+    </div>
+  </header>
+  <article id="main">
+
+    <h1>Cutting a Chess Pawn From Five Hours to Two</h1>
+    <p class="meta"><time datetime="2026-08-13">2026-08-13</time> &middot; machining</p>
+
+    <div class="tldr">
+      <strong>TL;DR:</strong> My first 4-axis CNC chess pawn took over five hours of machine time. I got it down to about two hours and seven minutes by cutting waste, not by buying a faster machine. The biggest win was simple: the first pawn was finished with a needle-fine engraver that had to crawl, and a slightly larger one did the same job in roughly two hours less, indistinguishable after sanding. Most of the rest came from noticing that the CAM sweeps the whole model on every pass even when most of it is already finished, then splitting each piece into regions so the tool only travels where material remains. One tempting final speedup got rejected: it left ridges that pushed the work onto the sanding bench, so the fastest cut on the clock made a worse pawn.
+    </div>
+
+    <h2>Context</h2>
+
+    <p>I set out to make a chess set: designed in CAD and machined from solid stock on a desktop CNC, rather than bought or 3D-printed. The machine is the Makera Z1, an entry-level desktop mill with three linear axes (X, Y, Z) plus a fourth rotary axis (A) that spins the stock in a chuck while the tool cuts. It arrived not long after <a href="2026-04-29-three-threads-from-onboarding-a-cnc.html">the post where I was still waiting on it</a>. A chess piece is mostly a <em>surface of revolution</em>, a silhouette spun around a central axis, which suits rotary machining well. You draw the profile, the machine spins the blank, and the tool traces the outline as the material rotates past it.</p>
+
+    <p>Two facts about the machine shape everything that follows. It runs <strong>open-loop steppers</strong>: the controller commands a move and assumes it happened. Nothing feeds actual position back, so if the tool stalls or the part slips, the machine keeps going, blind. And the rotary axis is <strong>belt-driven</strong> rather than harmonic-drive, so it flexes under load. Both point the same way: keep cutting forces low, keep the tool engaged smoothly, and don't count on the machine to notice when something goes wrong.</p>
+
+    <p>The pawn is the right piece to learn on. A set needs sixteen of them, more than double any other piece, so time saved on a pawn multiplies hard. They are also simple enough that failures are easy to read: when something goes wrong on a pawn, you can usually see what and why.</p>
+
+    <h2>Problem</h2>
+
+    <p>The first pawn that came out clean took <strong>over five hours of machine time</strong>. That is a lot for one decorative piece, and punishing across sixteen. Buying speed was not an option, so the useful question was where the five hours actually went, and how much of it was real cutting versus wasted motion.</p>
+
+    <p>Two things were eating the time. The finishing pass was running a tool so fine it had to crawl to lay down a smooth surface. And a good share of the remaining time was the tool moving through empty space at cutting speed, tracing surfaces that were already finished on its way to the small amount of material that still needed removing. The fine-tool problem was the bigger chunk of raw time. The wasted motion taught me more.</p>
+
+    <h2>Approach</h2>
+
+    <p>The mental model I leaned on borrows a term from CAM: <strong>rest machining</strong>. After a roughing pass removes the bulk, much of the remaining toolpath is spent revisiting regions that are already at final dimension. A CAM package with true rest machining carries a running <em>stock model</em>, a simulation of what material is left, and restricts each later pass to only the regions that still have stock. The tool goes straight to what is unfinished and skips what is done.</p>
+
+    <p>My CAM does not do that. It is capable but coarse: it takes the imported model, treats it as a single object, and generates operations that cover the whole object. So the plan became to recreate rest machining by hand, using the one thing I controlled, which was the geometry and operations fed into the CAM. If the CAM insists on covering the whole object, I can make the object smaller or split it into pieces it will scope separately.</p>
+
+    <p>Most of the fixes below share one idea: keep the tool from accounting for material that is not there or is already done. The first fix is different and it is the largest, so I will start there.</p>
+
+    <h2>Process</h2>
+
+    <h3>1. Stop finishing with a needle</h3>
+
+    <p>The largest single cut came first and was almost embarrassingly simple. The five-hour pawn was finished with a <strong>0.1&nbsp;mm engraver</strong>, a tiny-tipped tool taking a correspondingly tiny bite on every pass. At that tip size the stepover has to be minuscule to leave a smooth surface, so the finishing pass became thousands of hair-width lines crawling over the whole piece. That tool is right for genuinely fine detail and wrong for finishing a broad curved surface.</p>
+
+    <p>Switching the finish to a <strong>0.3&nbsp;mm engraver</strong>, roughly triple the tip and a much larger effective stepover, took about <strong>two hours off the pawn on its own</strong>. After sanding and staining, the open curved surfaces looked the same as the 0.1&nbsp;mm version. The fine tool had been buying surface resolution that the finishing process erased anyway. The takeaway, which comes back later in a worse form: fit the finishing tool to the surface, and don't pay machine time for detail the bench will wipe out.</p>
+
+    <div class="aside">
+      <p>A 0.1&nbsp;mm tip still earns its place, but only in the tight valleys and sharp corners where a bigger tool physically cannot reach and sandpaper cannot follow. Everywhere else it is a needle doing a trowel's job.</p>
+    </div>
+
+    <h3>2. Finding the waste: the tool sweeps a finished body to reach the stems</h3>
+
+    <p>The pawn is held to the stock by small <strong>stems</strong>, thin necks of material at each end that keep the piece attached to the bar during cutting and give me something to grip and part off afterward. One sits at the base as the workholding stub. One sits at the top so the ball-end roughing tool can swing around the front of the pawn's head without fouling it.</p>
+
+    <p>Watching the toolpath preview, the problem showed itself. Once the body of the pawn was fully cut and only the top stem region still had material, the finishing pass was still sweeping the tool back and forth across the entire body on every rotation. It traced already-finished surface, the full length of the piece, to service a sliver of material at the top. On the tail-end passes the tool was maybe 10% engaged and 90% traveling through air.</p>
+
+    <div class="aside">
+      <p>This is the same waste rest machining exists to eliminate, in miniature. The tool is not cutting; it is commuting.</p>
+    </div>
+
+    <h3>3. The root cause: the CAM imports the model as one object</h3>
+
+    <p>Tracing why the tool swept the whole body led to the real cause. When I bring the model over from CAD as a STEP file, it imports as <strong>one solid body</strong>. The CAM sees one object, generates one operation to cover it, and that operation sweeps the object's whole extent on every pass. Import, operation, and toolpath all treat the pawn as a single undifferentiated thing to blanket. Nothing in the pipeline knows the body is done and only the top remains.</p>
+
+    <p>That reframed the fix. It was not a toolpath setting to tweak or a stray line of G-code to delete. It was upstream: give the CAM something other than one monolith to work from.</p>
+
+    <h3>4. The fix: split the model into layers in CAD</h3>
+
+    <p>The work happened back in CAD, not in the CAM. In Fusion I sliced the pawn into horizontal <strong>layers</strong> and split each into its own body, then exported them as five separate STEP files. Importing all five and lining them up in the CAM put them back into one continuous pawn in space, but the CAM now saw five objects instead of one. It cuts a single pawn; it just thinks of it as five stacked regions.</p>
+
+    <p>Each layer gets a roughing pass scoped to only that layer's body. When the tool works the top region, the object it is covering is just the top layer. There is no body below it to sweep, because that operation cannot see the rest of the pawn. This is rest machining by pre-slicing the geometry: the tool finishes each section and moves on, with no full-length traversal.</p>
+
+    <p>Reordering the layers and dropping one redundant stem cut roughly <strong>30% off the estimated machine time</strong> on its own. Isolating the top of the head into its own layer captured more. The tightly-curved cap needs many fine layers to resolve, and each of those fine layers had been sweeping the whole head to service a few millimeters at the apex. The dead-air time per pass actually rises as the cap gets smaller, since the cut shrinks while the sweep stays the same length. Scoping the cap removes exactly the worst passes.</p>
+
+    <div class="aside">
+      <p><strong>Seams matter.</strong> Every layer boundary is a place where two passes meet, and a badly-placed seam leaves a witness ridge on the finished surface. The trick is to put the splits on <em>natural transitions</em> in the profile, where the diameter already changes and a boundary hides in the geometry, and never through a smooth stretch where the seam would show. Placed on natural seams, the boundaries sand out invisibly. In one happy accident, the tool's tidy-up loop at each boundary read like a faint intentional turned ring rather than an artifact.</p>
+    </div>
+
+    <h3>5. Model only the surface that exists</h3>
+
+    <p>Still in CAD, using the same slice tool that cut the pawn into layers, I found another problem. The pawn's spherical head had been modeled as a <em>full sphere</em> intersecting the neck. The lower hemisphere of that sphere is buried inside the neck and never appears on the finished surface, but the CAM was still processing it, generating passes to account for interior geometry that does not exist on the real piece.</p>
+
+    <p>The fix was to <strong>slice the bottom off the sphere to match the neck intersection</strong>, removing the buried portion so the head geometry ends exactly where it meets the neck, with no hidden surface underneath. Same visible shape, no phantom interior, and the toolpath stops accounting for geometry that gets thrown away. The broader lesson is to watch for solids that <em>intersect</em> rather than meet cleanly, because the overlap is real geometry the CAM will dutifully process even though none of it survives to the finished part. The same class of problem had bitten me earlier, when a torus used for a collar ring refused to stay coaxial with the body. Intersecting primitives create surplus and sometimes misaligned surface; trimming them to meet cleanly, or building from a single revolved profile, avoids it.</p>
+
+    <h3>6. A redundant rotation worth removing (not yet done)</h3>
+
+    <p>One more source of waste I identified but have not acted on: the CAM inserts <code>A0</code> moves between toolpath steps. On a full revolution, angle 0 and angle 360, and 36000 for that matter, are the same physical position, because rotation is modular. But the controller tracks <em>cumulative</em> commanded angle, so it does not count modulo 360; it keeps climbing. An inserted <code>A0</code> after the axis has wound up to, say, 7000 degrees does not quietly reset a counter. It physically spins the part back nineteen turns to reach &ldquo;zero.&rdquo; For a surface-of-revolution cut where the tool already ends each step at a full-revolution boundary, that rewind is pure dead time.</p>
+
+    <p>The clean handling is to reset the position <em>count</em> at a full-revolution boundary, a no-motion bookkeeping reset that declares the current angle to be zero without moving the part, rather than commanding a rotation back to it. That keeps the accumulated angle from ballooning across a long job without spending time on needless spins between steps. I have filed this as a <strong>possible future enhancement</strong>. The analysis holds up, but I have not yet edited the posted G-code to do it, so it is not reflected in the times below.</p>
+
+    <div class="aside">
+      <p><strong>Verify before you cut.</strong> A redundant <code>A0</code> is only safe to remove if the tool genuinely ends the step at a full-revolution multiple. If a step ends at a partial angle and the next assumes it starts at zero, that <code>A0</code> is a real reposition, and deleting it starts the next pass at the wrong angle. The general rule for editing generated G-code: find the structural redundancy, quantify it, and confirm it against the simulation. Never trim blind. That is why this one is still on the future list rather than done.</p>
+    </div>
+
+    <h3>7. The tooling swap that looked like a win and wasn't</h3>
+
+    <p>The last experiment was another finishing tool change. I had been finishing with the 0.3&nbsp;mm engraver, and I tried a small reduced-neck ball end instead, a 1&nbsp;mm cutting diameter on a 3&nbsp;mm reach, for the curved surfaces. On paper it was a big speedup on the finishing pass, and it dropped the pawn's machine time to about <strong>an hour and twenty-two minutes</strong>. Two-beers-tonight territory.</p>
+
+    <p>Then I sanded it, and sanded it, and sanded it. The small ball end left <strong>pronounced ridges across the curved surfaces that took far more hand-sanding to remove than the finish from the larger tool</strong>. The extra bench work gave back much of the machine-time saving and left a worse surface for the trouble. I judged the hour-and-twenty-two pawn suboptimal and dropped the approach, even though it was the fastest number the machine ever posted.</p>
+
+    <p>This is a physics problem I had the intuition for and walked into anyway. A cutting tool sticking out of the collet is a cantilever beam, fixed at the collet and pushed sideways by the cutting force at the tip. Its deflection under that force scales with the <em>cube</em> of the stickout length and inversely with the <em>fourth power</em> of the diameter. A skinny 1&nbsp;mm tool is far less rigid than a fatter one, so it flexes under the finishing load, and a finishing tool that flexes leaves ridges. The tool wandered and the surface recorded it.</p>
+
+    <p>The machine clock had told only half the story. The hour-and-twenty-two pawn was quick, but the ridges moved a chunk of the work from the machine onto the sanding bench, and the surface came out worse. Once the whole process was counted, the fastest machine time was not the best pawn. I kept the slower finishing pass, and the job I settled on comes in around <strong>two hours seven minutes</strong>, with a pawn that needs very little sanding.</p>
+
+    <p>Worth setting this next to the very first optimization, because they look contradictory and are not. Going from the 0.1&nbsp;mm to the 0.3&nbsp;mm engraver was a speed win that cost nothing, because the surface still came out clean and the finer detail was invisible after sanding. Going from the 0.3&nbsp;mm engraver to the 1&nbsp;mm ball was a speed win that cost too much, because that time the faster tool wrecked the surface. Same instinct, opposite outcome. The rule that fits both is to match the tool to the surface, and to bank a machine-time win only when the finish survives it.</p>
+
+    <h2>Outcome</h2>
+
+    <p>The pawn went from over five hours to a clean cut at two hours and seven minutes, and I learned where the real floor is.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Stage</th><th>Machine time</th><th>What changed</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>First clean pawn</td><td>~5 hr</td><td>Baseline: 0.1&nbsp;mm engraver finish (crawling), one operation over the whole object, full traversal</td></tr>
+          <tr><td>Right-sized finish + coarse scoping</td><td>~2 hr 28 min</td><td>Two changes at once: 0.1&nbsp;mm to 0.3&nbsp;mm engraver finish (the ~2 hr bulk of this drop), plus reordering bodies and dropping a redundant stem</td></tr>
+          <tr><td>Layered roughing on natural seams</td><td>2 hr 10 min</td><td>Hand-rolled rest machining; the tool finishes each region with no full-length traversal</td></tr>
+          <tr><td>Sliced the buried sphere bottom</td><td><strong>2 hr 7 min</strong> (kept)</td><td>Removed hidden interior geometry; the job I settled on</td></tr>
+          <tr><td>1&times;3 ball finish (<strong>rejected</strong>)</td><td>~1 hr 22 min*</td><td>*Fastest on the clock, but left ridges that gave much of the saved time back at the bench and a worse surface for it. Not worth the trade.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>The finishing-tool swap and the traversal cleanup land together in the second row because I made both changes before re-timing. The engraver swap was by far the larger share.</p>
+
+    <div class="aside">
+      <p><strong>Final pawn tooling (the kept 2:07 job):</strong></p>
+      <ul>
+        <li><strong>Roughing:</strong> 3&nbsp;mm &times; 10&nbsp;mm ball end</li>
+        <li><strong>Finishing:</strong> 0.3&nbsp;mm engraver</li>
+      </ul>
+    </div>
+
+    <p>The lasting results are the methods rather than the numbers, and they carry to every piece in the set:</p>
+
+    <ul>
+      <li><strong>Layered scoping on natural seams.</strong> Hand-built rest machining that keeps the tool engaged and hides its boundaries in the profile.</li>
+      <li><strong>Model only the surface that exists.</strong> Trim intersecting solids so they meet cleanly instead of overlapping, or build from a single revolved profile, so the CAM never processes buried geometry.</li>
+      <li><strong>Right tool per region.</strong> The layered approach also lets different tools run on different bands: a rigid ball on open curves, a fine engraver only in the tight detail that needs it.</li>
+      <li><strong>Optimize total time, not machine time.</strong> The machine clock is a proxy, and a misleading one. The real target is pieces per hour across the whole operation, machine plus bench. A cut that ridges is a cut that borrows time from sanding.</li>
+    </ul>
+
+    <p>That last point reframed the exercise. Once the finishing is pipelined, with the next pawn cutting while the last one is sanded, the machine and the bench run in parallel, and the goal becomes balancing the two stations rather than minimizing either alone. Below the point where machine time meets hand time, more machine speed stops buying throughput and just leaves the machine idle waiting on hands. The real floor is not the fastest possible toolpath. It is the fastest toolpath that does not create work downstream.</p>
+
+    <h2>Open Questions</h2>
+
+    <ul>
+      <li><strong>Removing the redundant A0 rotations.</strong> The analysis in section 6 holds up, but I have not edited the posted G-code yet. The next step is a scripted parse-and-verify pass: find each inter-step <code>A0</code>, confirm the tool is at a full-revolution boundary before it, and replace the rewind with a no-motion count reset, checking every change against the simulation before running. It is a real remaining saving on long jobs, gated behind doing it safely rather than trimming blind.</li>
+      <li><strong>Where a CAM with real rest machining and machining boundaries would change the calculus.</strong> Everything above is hand-rolled scoping to work around a CAM that treats the import as one object. A package with true stock-model rest machining and per-face containment would generate these scoped paths automatically, and would unlock things hand-slicing cannot, such as the multi-direction indexed passes a non-surface-of-revolution piece like the knight will need. The open question is whether that capability is worth its cost for turned pieces, given how far manual scoping already gets. My current read is that it pays for itself on the piece I cannot hand-scope, not on shaving time off the ones I can.</li>
+      <li><strong>The best machine-time to hand-time balance under a two-person line.</strong> With a second person now on sanding and detail work, the finishing station parallelizes further, which may make the machine the binding constraint again, and make deeper machine optimization worth real throughput rather than a personal best. The balance point moves and I have not pinned down where.</li>
+      <li><strong>Whether a more aggressive roughing tool is the last honest lever.</strong> The waste-removal well is nearly dry. What remains is the irreducible core of actual material removal, and the only way to speed that up is a fatter, stiffer roughing tool taking heavier cuts, which risks the open-loop steppers skipping and the belt axis flexing. That trades time against reliability, and I have not found the edge of it yet.</li>
+    </ul>
+
+    <hr>
+
+    <footer>
+      <p><em>The prose here is Claude's. The machine, the cuts, and the numbers are mine. Same arrangement as the earlier CNC post.</em></p>
+    </footer>
+  </article>
+
+  <footer class="sitefoot">
+    <nav class="bar-nav" aria-label="Site">
+      <a href="../">home</a>
+      <a href="https://github.com/ShaneMarusczak/blog" target="_blank" rel="noopener noreferrer">github</a>
+    </nav>
+    <p>Plain HTML. No frameworks. &middot; <a href="https://marusczak.com" target="_blank" rel="noopener noreferrer">marusczak.com</a></p>
+  </footer>
+</body>
+</html>

@@ -1,5 +1,13 @@
 [
   {
+    "file": "2026-08-13-cutting-a-chess-pawn-from-five-hours-to-two.html",
+    "title": "Cutting a Chess Pawn From Five Hours to Two",
+    "date": "2026-08-13",
+    "category": "machining",
+    "description": "Cutting a 4-axis CNC chess pawn's machine time from five hours to about two on an entry-level rotary machine: right-sizing the finishing tool, scoping the toolpath, and why an even faster finish wasn't worth keeping.",
+    "keywords": "cnc, 4-axis, rotary machining, cam, toolpath optimization, makera z1, fusion, chess"
+  },
+  {
     "file": "2026-07-27-instrument-first-ben-eaters-6502.html",
     "title": "Instrument First: Ben Eater's 6502 on Breadboards",
     "date": "2026-07-27",

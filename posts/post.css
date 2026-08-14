@@ -90,6 +90,47 @@ article li {
   margin-bottom: 2rem;
 }
 
+/* --- Aside / side note --- */
+
+.aside {
+  background: rgba(0, 0, 0, 0.03);
+  border-left: 3px solid rgba(0, 0, 0, 0.35);
+  padding: 0.85rem 1.15rem;
+  margin: 1.5rem 0;
+  font-size: 0.95em;
+}
+
+.aside > p:last-child,
+.aside > ul:last-child {
+  margin-bottom: 0;
+}
+
+/* --- Tables --- */
+
+.table-wrap {
+  overflow-x: auto;
+  margin: 1.25rem 0;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.9em;
+  line-height: 1.5;
+}
+
+th, td {
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  padding: 0.45rem 0.65rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  background: rgba(0, 0, 0, 0.05);
+  font-weight: 600;
+}
+
 /* --- Code --- */
 
 code {
@@ -155,5 +196,11 @@ figcaption {
 
   pre {
     padding: 0.85rem 1rem;
+  }
+
+  /* Let the table keep readable columns and scroll inside .table-wrap
+     instead of squeezing to one word per line. */
+  .table-wrap table {
+    min-width: 30rem;
   }
 }
