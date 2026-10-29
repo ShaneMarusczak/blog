@@ -1,5 +1,13 @@
 [
   {
+    "file": "2026-10-29-it-saw-the-print-fail-28886-times.html",
+    "title": "It Saw the Print Fail 28,886 Times",
+    "date": "2026-10-29",
+    "category": "hardware",
+    "description": "A Jetson Orin Nano object detection system built around declarative event configs, the 3D-print failure it logged 28,886 times without stopping the printer, and the one-line prompts that shaped each design decision.",
+    "keywords": "jetson, orin nano, yolo, object detection, bytetrack, 3d printing, spaghetti detection, claude code, declarative config"
+  },
+  {
     "file": "2026-08-13-cutting-a-chess-pawn-from-five-hours-to-two.html",
     "title": "Cutting a Chess Pawn From Five Hours to Two",
     "date": "2026-08-13",
