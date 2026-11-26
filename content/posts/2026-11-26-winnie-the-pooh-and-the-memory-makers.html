@@ -58,13 +58,9 @@
 
     <p>Tyrell and Stelline both work with planted memories. What separates them is what the memory is for, and whether someone outside the mind can check it.</p>
 
-    <h2>The other seven</h2>
-
-    <p>Memory isn't the only pattern from the Gandalf post that turns around. Five of the other seven run through channels that also ship as features: pages written for agents (llms.txt), authority that comes from the system prompt, tool lists published by design, tool descriptions their owners write, and rules files like AGENTS.md. Exploiting helpfulness turns around loosely, into <a href="https://arxiv.org/abs/2511.18397" target="_blank" rel="noopener noreferrer">framing used on purpose in training</a>. Encoding is the exception, since I haven't found a good reason to hide input from the layer meant to check it. Memory has the highest stakes of the eight, because it persists across sessions and the model treats it as its own history.</p>
-
     <h2>Where the line sits</h2>
 
-    <p>In every pattern that turns around, the model reads the attack and the feature the same way. The difference is who wrote the input and whether the other side agreed, and MindfulChat showed that the model can't be relied on to check either one.</p>
+    <p>The model reads a planted memory and one the user asked it to keep the same way. The difference is who wrote it and whether the other side agreed, and MindfulChat showed that the model can't be relied on to check either one.</p>
 
     <p>So the check has to sit outside the model, the way Stelline sits outside the replicant. The <a href="https://arxiv.org/abs/2404.13208" target="_blank" rel="noopener noreferrer">instruction hierarchy</a> trains models to weigh instructions by source. Google DeepMind's <a href="https://arxiv.org/abs/2503.18813" target="_blank" rel="noopener noreferrer">CaMeL</a> builds systems where text retrieved later can't change what the system does. OWASP's <a href="https://genai.owasp.org/llmrisk/llm01-prompt-injection/" target="_blank" rel="noopener noreferrer">prompt injection guidance</a> says to mark external content as untrusted and enforce privileges in code, where the model can't talk its way past them.</p>
 
@@ -85,8 +81,13 @@
       <li><a href="https://transformer-circuits.pub/2024/scaling-monosemanticity/index.html" target="_blank" rel="noopener noreferrer">Scaling Monosemanticity</a> (Anthropic): the Golden Gate Bridge feature</li>
       <li><a href="https://alignment.anthropic.com/2025/modifying-beliefs-via-sdf" target="_blank" rel="noopener noreferrer">Modifying LLM Beliefs with Synthetic Document Finetuning</a> (Anthropic) and <a href="https://www.lesswrong.com/posts/ARQs7KYY9vJHeYsGc/modifying-llm-beliefs-with-synthetic-document-finetuning" target="_blank" rel="noopener noreferrer">the discussion thread</a></li>
       <li><a href="https://arxiv.org/abs/2601.10160" target="_blank" rel="noopener noreferrer">Alignment Pretraining: AI Discourse Causes Self-Fulfilling (Mis)alignment</a></li>
-      <li><a href="https://arxiv.org/abs/2511.18397" target="_blank" rel="noopener noreferrer">Natural Emergent Misalignment from Reward Hacking in Production RL</a>: inoculation prompting</li>
       <li><a href="https://arxiv.org/abs/2404.13208" target="_blank" rel="noopener noreferrer">The Instruction Hierarchy</a> (OpenAI)</li>
       <li><a href="https://arxiv.org/abs/2503.18813" target="_blank" rel="noopener noreferrer">Defeating Prompt Injections by Design</a> (Google DeepMind): CaMeL</li>
       <li><a href="https://genai.owasp.org/llmrisk/llm01-prompt-injection/" target="_blank" rel="noopener noreferrer">OWASP LLM01:2025 Prompt Injection</a></li>
     </ul>
+
+    <hr>
+
+    <footer>
+      <p><em>The prose here is Claude's. The challenge run and the argument are mine.</em></p>
+    </footer>
